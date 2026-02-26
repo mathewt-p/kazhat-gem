@@ -1,0 +1,39 @@
+<div class="kazhat-chat"
+     data-controller="kazhat--chat kazhat--typing"
+     data-kazhat--chat-conversation-id-value="<%= @conversation.id %>"
+     data-kazhat--chat-user-id-value="<%= current_user&.id %>"
+     data-kazhat--typing-user-id-value="<%= current_user&.id %>">
+
+  <div style="padding: 12px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+    <h3 style="margin: 0;"><%= @conversation.display_name_for(current_user&.id) %></h3>
+    <div>
+      <button class="kazhat-btn kazhat-btn-primary"
+              data-controller="kazhat--call"
+              data-kazhat--call-call-id-value=""
+              data-action="click->kazhat--call#initializeCall">
+        Video Call
+      </button>
+    </div>
+  </div>
+
+  <div class="kazhat-messages" data-kazhat--chat-target="messages">
+    <% @messages.each do |message| %>
+      <div class="kazhat-message <%= message.sender_id == current_user&.id ? 'kazhat-message-own' : 'kazhat-message-other' %>">
+        <div class="kazhat-message-sender"><%= message.sender.kazhat_display_name %></div>
+        <div class="kazhat-message-body"><%= message.body %></div>
+        <div class="kazhat-message-time"><%= message.created_at.strftime("%H:%M") %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="kazhat-typing-indicator" data-kazhat--chat-target="typingIndicator" data-kazhat--typing-target="indicator">
+  </div>
+
+  <div class="kazhat-chat-input">
+    <textarea data-kazhat--chat-target="input"
+              data-action="input->kazhat--chat#onInput keydown->kazhat--chat#onKeydown"
+              placeholder="Type a message..."
+              rows="1"></textarea>
+    <button class="kazhat-btn kazhat-btn-primary" data-action="click->kazhat--chat#sendMessage">Send</button>
+  </div>
+</div>

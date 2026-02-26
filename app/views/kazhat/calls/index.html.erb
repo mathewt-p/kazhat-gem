@@ -1,0 +1,28 @@
+<div style="padding: 20px;">
+  <h2>Call History</h2>
+
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Type</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Status</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Initiator</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Duration</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Participants</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @calls.each do |call| %>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= call.call_type.capitalize %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= call.status.capitalize %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= call.initiator.kazhat_display_name %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= call.formatted_duration %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= call.call_participants.count %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= call.created_at.strftime("%b %d, %Y %H:%M") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

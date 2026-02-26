@@ -1,0 +1,32 @@
+<div class="kazhat-popup"
+     data-controller="kazhat--call-popup kazhat--call kazhat--call-controls kazhat--video-grid kazhat--call-timer"
+     data-kazhat--call-popup-target="popup"
+     data-kazhat--call-call-id-value="<%= local_assigns[:call_id] %>"
+     data-kazhat--call-user-id-value="<%= current_user&.id %>"
+     data-action="kazhat--call:addRemoteStream->kazhat--video-grid#addRemoteStream kazhat--call:removeParticipant->kazhat--video-grid#removeParticipant">
+
+  <div class="kazhat-popup-header" data-action="mousedown->kazhat--call-popup#startDrag">
+    <span class="kazhat-call-timer" data-kazhat--call-timer-target="display">0:00</span>
+    <div>
+      <button data-action="click->kazhat--call-popup#toggleMinimize">_</button>
+      <button data-action="click->kazhat--call-popup#toggleFullscreen">[]</button>
+    </div>
+  </div>
+
+  <div class="kazhat-video-grid" data-kazhat--video-grid-target="grid">
+    <div class="kazhat-local-video">
+      <video data-kazhat--video-grid-target="localVideo" autoplay playsinline muted></video>
+    </div>
+  </div>
+
+  <div class="kazhat-call-controls">
+    <button data-kazhat--call-controls-target="muteBtn"
+            data-action="click->kazhat--call-controls#toggleMute">Mute</button>
+    <button data-kazhat--call-controls-target="videoBtn"
+            data-action="click->kazhat--call-controls#toggleVideo">Stop Video</button>
+    <button data-kazhat--call-controls-target="screenBtn"
+            data-action="click->kazhat--call-controls#toggleScreenShare">Share Screen</button>
+    <button class="kazhat-btn-hangup"
+            data-action="click->kazhat--call-controls#hangup">Hang Up</button>
+  </div>
+</div>

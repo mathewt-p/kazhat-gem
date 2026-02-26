@@ -1,0 +1,36 @@
+<div style="padding: 20px;">
+  <h2>Call Details</h2>
+
+  <div style="margin-bottom: 20px;">
+    <p><strong>Type:</strong> <%= @call.call_type.capitalize %></p>
+    <p><strong>Status:</strong> <%= @call.status.capitalize %></p>
+    <p><strong>Initiator:</strong> <%= @call.initiator.kazhat_display_name %></p>
+    <p><strong>Duration:</strong> <%= @call.formatted_duration %></p>
+    <p><strong>Started:</strong> <%= @call.started_at&.strftime("%b %d, %Y %H:%M") || "N/A" %></p>
+    <p><strong>Ended:</strong> <%= @call.ended_at&.strftime("%b %d, %Y %H:%M") || "N/A" %></p>
+  </div>
+
+  <h3>Participants</h3>
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Name</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Status</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Joined</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Left</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #e0e0e0;">Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @call.call_participants.each do |participant| %>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= participant.user.kazhat_display_name %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= participant.status.capitalize %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= participant.joined_at&.strftime("%H:%M:%S") || "N/A" %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= participant.left_at&.strftime("%H:%M:%S") || "N/A" %></td>
+          <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= participant.formatted_duration %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

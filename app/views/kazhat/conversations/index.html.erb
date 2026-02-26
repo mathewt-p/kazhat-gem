@@ -1,0 +1,34 @@
+<div class="kazhat-layout">
+  <div class="kazhat-sidebar"
+       data-controller="kazhat--conversation-list"
+       data-action="kazhat--conversation-list:selected->kazhat--chat#loadConversation">
+    <input type="text"
+           class="kazhat-search-input"
+           placeholder="Search conversations..."
+           data-kazhat--conversation-list-target="searchInput"
+           data-action="input->kazhat--conversation-list#search">
+    <div class="kazhat-conversation-list" data-kazhat--conversation-list-target="list">
+    </div>
+  </div>
+
+  <div class="kazhat-main">
+    <div class="kazhat-chat"
+         data-controller="kazhat--chat kazhat--typing"
+         data-kazhat--chat-user-id-value="<%= current_user&.id %>">
+      <div class="kazhat-messages" data-kazhat--chat-target="messages">
+        <p style="text-align: center; color: #888; margin-top: 40px;">Select a conversation to start chatting</p>
+      </div>
+
+      <div class="kazhat-typing-indicator" data-kazhat--chat-target="typingIndicator" data-kazhat--typing-target="indicator">
+      </div>
+
+      <div class="kazhat-chat-input">
+        <textarea data-kazhat--chat-target="input"
+                  data-action="input->kazhat--chat#onInput keydown->kazhat--chat#onKeydown"
+                  placeholder="Type a message..."
+                  rows="1"></textarea>
+        <button class="kazhat-btn kazhat-btn-primary" data-action="click->kazhat--chat#sendMessage">Send</button>
+      </div>
+    </div>
+  </div>
+</div>

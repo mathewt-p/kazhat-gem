@@ -1,0 +1,20 @@
+<div class="kazhat-incoming-call"
+     data-controller="kazhat--incoming-call"
+     data-kazhat--incoming-call-call-id-value="<%= local_assigns[:call_id] %>"
+     data-kazhat--incoming-call-call-type-value="<%= local_assigns[:call_type] || 'video' %>"
+     data-kazhat--incoming-call-caller-name-value="<%= local_assigns[:caller_name] %>">
+
+  <div data-kazhat--incoming-call-target="container">
+    <div class="kazhat-incoming-call-info">
+      <strong data-kazhat--incoming-call-target="callerName"><%= local_assigns[:caller_name] %></strong>
+      <span data-kazhat--incoming-call-target="callType">
+        <%= local_assigns[:call_type] == 'video' ? 'Video Call' : 'Audio Call' %>
+      </span>
+    </div>
+
+    <div class="kazhat-incoming-call-actions">
+      <button class="kazhat-btn kazhat-btn-accept" data-action="click->kazhat--incoming-call#accept">Accept</button>
+      <button class="kazhat-btn kazhat-btn-decline" data-action="click->kazhat--incoming-call#decline">Decline</button>
+    </div>
+  </div>
+</div>
