@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import { createSubscription } from "../lib/cable"
-import { api } from "../lib/api"
+import { createSubscription } from "kazhat/lib/cable"
+import { api } from "kazhat/lib/api"
 
 export default class extends Controller {
   static targets = ["messages", "input", "typingIndicator"]

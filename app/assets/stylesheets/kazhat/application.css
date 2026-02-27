@@ -6,13 +6,14 @@
   bottom: 20px;
   right: 20px;
   width: 400px;
-  height: 300px;
+  height: 350px;
   background: #1a1a2e;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   z-index: 10000;
   overflow: hidden;
   display: none;
+  flex-direction: column;
 }
 
 .kazhat-popup.kazhat-fullscreen {
@@ -59,9 +60,11 @@
   display: grid;
   gap: 4px;
   width: 100%;
-  height: calc(100% - 80px);
+  flex: 1;
+  min-height: 0;
   padding: 4px;
   box-sizing: border-box;
+  position: relative;
 }
 
 .kazhat-video-container {
@@ -92,8 +95,8 @@
   width: 120px;
   height: 90px;
   position: absolute;
-  bottom: 80px;
-  right: 12px;
+  bottom: 8px;
+  right: 8px;
   border-radius: 8px;
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.2);

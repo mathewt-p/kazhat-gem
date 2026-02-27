@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import { callState } from "../lib/call_state"
-import { api } from "../lib/api"
+import { callState } from "kazhat/lib/call_state"
+import { api } from "kazhat/lib/api"
 
 export default class extends Controller {
   static targets = ["container", "callerName", "callType"]

@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { api } from "../lib/api"
+import { api } from "kazhat/lib/api"
 
 export default class extends Controller {
   static targets = ["list", "searchInput"]

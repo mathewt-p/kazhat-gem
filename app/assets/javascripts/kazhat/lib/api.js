@@ -1,10 +1,13 @@
-const API_BASE = "/kazhat/api/v1"
+const API_BASE = document.querySelector('meta[name="kazhat-api-url"]')?.content || "/kazhat/api/v1"
 
 function csrfToken() {
   return document.querySelector('meta[name="csrf-token"]')?.content
 }
 
 async function request(method, path, data) {
+  const url = `${API_BASE}${path}`
+  console.log(`[Kazhat] API ${method} ${url}`, data || "")
+
   const options = {
     method,
     headers: {
@@ -17,14 +20,18 @@ async function request(method, path, data) {
     options.body = JSON.stringify(data)
   }
 
-  const response = await fetch(`${API_BASE}${path}`, options)
+  const response = await fetch(url, options)
 
   if (!response.ok) {
+    const text = await response.text().catch(() => "")
+    console.error(`[Kazhat] API error: ${response.status} ${response.statusText}`, text)
     throw new Error(`HTTP ${response.status}: ${response.statusText}`)
   }
 
   if (response.status === 204) return null
-  return response.json()
+  const json = await response.json()
+  console.log(`[Kazhat] API response:`, json)
+  return json
 }
 
 export const api = {

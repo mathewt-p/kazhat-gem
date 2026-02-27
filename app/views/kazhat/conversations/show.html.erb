@@ -8,9 +8,10 @@
     <h3 style="margin: 0;"><%= @conversation.display_name_for(current_user&.id) %></h3>
     <div>
       <button class="kazhat-btn kazhat-btn-primary"
-              data-controller="kazhat--call"
-              data-kazhat--call-call-id-value=""
-              data-action="click->kazhat--call#initializeCall">
+              data-controller="kazhat--quick-call"
+              data-kazhat--quick-call-conversation-id-value="<%= @conversation.id %>"
+              data-kazhat--quick-call-call-type-value="video"
+              data-action="click->kazhat--quick-call#call">
         Video Call
       </button>
     </div>

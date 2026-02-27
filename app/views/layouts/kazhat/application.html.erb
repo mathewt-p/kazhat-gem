@@ -7,10 +7,10 @@
   <%= csp_meta_tag %>
   <%= kazhat_meta_tags %>
   <%= stylesheet_link_tag "kazhat/application", media: "all" %>
+  <%= javascript_importmap_tags if respond_to?(:javascript_importmap_tags) %>
 </head>
 <body>
   <%= yield %>
   <%= kazhat_call_container %>
-  <%= javascript_include_tag "kazhat/application" %>
 </body>
 </html>

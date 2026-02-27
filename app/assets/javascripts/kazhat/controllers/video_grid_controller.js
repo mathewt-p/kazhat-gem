@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { callState } from "../lib/call_state"
+import { callState } from "kazhat/lib/call_state"
 
 export default class extends Controller {
   static targets = ["grid", "localVideo"]

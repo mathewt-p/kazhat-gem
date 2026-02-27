@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-import { callState } from "../lib/call_state"
-import { replaceVideoTrack } from "../lib/webrtc"
+import { callState } from "kazhat/lib/call_state"
+import { replaceVideoTrack } from "kazhat/lib/webrtc"
+import { removeCallPopup } from "kazhat/lib/call_popup"
 
 export default class extends Controller {
   static targets = ["muteBtn", "videoBtn", "screenBtn"]
@@ -95,8 +96,11 @@ export default class extends Controller {
   }
 
   hangup() {
-    this.dispatch("hangup")
+    // Reset state first (stops media, closes peer connections)
     callState.reset()
+    // Remove popup from DOM (triggers disconnect on all controllers,
+    // which unsubscribes from ActionCable)
+    removeCallPopup()
   }
 
   updateUI(state) {
@@ -106,7 +110,7 @@ export default class extends Controller {
     }
 
     if (this.hasVideoBtnTarget) {
-      this.videoBtnTarget.classList.toggle("kazhat-active", !state.videoEnabled)
+      this.videoBtnTarget.classList.toggle("kazhat-active", state.videoEnabled)
       this.videoBtnTarget.textContent = state.videoEnabled ? "Stop Video" : "Start Video"
     }
 

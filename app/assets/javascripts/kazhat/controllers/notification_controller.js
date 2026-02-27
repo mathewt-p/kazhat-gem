@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-import { createSubscription } from "../lib/cable"
-import { callState } from "../lib/call_state"
+import { createSubscription } from "kazhat/lib/cable"
+import { callState } from "kazhat/lib/call_state"
+import { injectCallPopup } from "kazhat/lib/call_popup"
 
 export default class extends Controller {
   static values = {
@@ -8,10 +9,16 @@ export default class extends Controller {
   }
 
   connect() {
-    if (!this.userIdValue) return
+    if (!this.userIdValue) {
+      console.warn("[Kazhat] Notification controller: no userId, skipping")
+      return
+    }
 
+    console.log("[Kazhat] Notification controller connected, userId:", this.userIdValue)
     this.subscription = createSubscription("NotificationChannel", {}, {
-      received: (data) => this.handleNotification(data)
+      connected: () => console.log("[Kazhat] NotificationChannel connected"),
+      received: (data) => this.handleNotification(data),
+      disconnected: () => console.log("[Kazhat] NotificationChannel disconnected")
     })
   }
 
@@ -22,6 +29,7 @@ export default class extends Controller {
   }
 
   handleNotification(data) {
+    console.log("[Kazhat] Notification received:", data.type, data)
     switch (data.type) {
       case "incoming_call":
         this.handleIncomingCall(data.call)
@@ -34,8 +42,12 @@ export default class extends Controller {
 
   handleIncomingCall(call) {
     // Don't show if already in a call
-    if (callState.get().callState !== "idle") return
+    if (callState.get().callState !== "idle") {
+      console.log("[Kazhat] Ignoring incoming call, already in a call")
+      return
+    }
 
+    console.log("[Kazhat] Incoming call:", call.id, "from:", call.initiator?.name, "type:", call.call_type)
     callState.set({ callState: "ringing_incoming" })
 
     this.dispatch("incomingCall", { detail: { call } })
@@ -58,12 +70,15 @@ export default class extends Controller {
     const declineBtn = container.querySelector(".kazhat-btn-decline")
 
     acceptBtn.addEventListener("click", () => {
+      console.log("[Kazhat] Accepting call:", call.id)
       callState.set({ callState: "connecting", callId: call.id })
       container.remove()
+      injectCallPopup(call.id, call.call_type || "video")
       this.dispatch("callAccepted", { detail: { callId: call.id } })
     })
 
     declineBtn.addEventListener("click", () => {
+      console.log("[Kazhat] Declining call:", call.id)
       callState.set({ callState: "idle" })
       container.remove()
       this.dispatch("callDeclined", { detail: { callId: call.id } })

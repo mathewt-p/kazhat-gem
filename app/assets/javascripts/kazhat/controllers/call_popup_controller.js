@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { callState } from "../lib/call_state"
+import { callState } from "kazhat/lib/call_state"
 
 export default class extends Controller {
   static targets = ["popup"]
@@ -17,7 +17,7 @@ export default class extends Controller {
     if (!this.hasPopupTarget) return
 
     const visible = state.callState !== "idle" && state.callState !== "ended"
-    this.popupTarget.style.display = visible ? "block" : "none"
+    this.popupTarget.style.display = visible ? "flex" : "none"
 
     if (state.isMinimized) {
       this.popupTarget.classList.add("kazhat-minimized")

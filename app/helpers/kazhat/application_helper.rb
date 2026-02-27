@@ -3,7 +3,7 @@ module Kazhat
     def kazhat_meta_tags
       tags = []
 
-      tags << tag.meta(name: "kazhat-api-url", content: "/kazhat/api/v1")
+      tags << tag.meta(name: "kazhat-api-url", content: "#{Kazhat::Engine.mount_path}/api/v1")
 
       tags << tag.meta(name: "kazhat-turn-servers", content: Kazhat.configuration.turn_servers.to_json)
 

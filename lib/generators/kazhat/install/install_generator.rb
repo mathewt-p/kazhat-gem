@@ -52,6 +52,12 @@ module Kazhat
           "    <%= kazhat_meta_tags %>\n"
         end
 
+        # Add kazhat stylesheet
+        inject_into_file "app/views/layouts/application.html.erb",
+          before: "  </head>" do
+          "    <%= stylesheet_link_tag \"kazhat/application\", \"data-turbo-track\": \"reload\" %>\n"
+        end
+
         inject_into_file "app/views/layouts/application.html.erb",
           before: "</body>" do
           "  <%= kazhat_call_container %>\n"
@@ -68,9 +74,32 @@ module Kazhat
 
               # Kazhat
               pin "kazhat", to: "kazhat/application.js"
-              pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
               pin "@rails/actioncable", to: "actioncable.esm.js"
+
+              # Kazhat - lib modules
+              pin "kazhat/lib/api", to: "kazhat/lib/api.js"
+              pin "kazhat/lib/cable", to: "kazhat/lib/cable.js"
+              pin "kazhat/lib/call_state", to: "kazhat/lib/call_state.js"
+              pin "kazhat/lib/call_popup", to: "kazhat/lib/call_popup.js"
+              pin "kazhat/lib/webrtc", to: "kazhat/lib/webrtc.js"
+
+              # Kazhat - controllers
+              pin "kazhat/controllers/call_controller", to: "kazhat/controllers/call_controller.js"
+              pin "kazhat/controllers/call_controls_controller", to: "kazhat/controllers/call_controls_controller.js"
+              pin "kazhat/controllers/call_popup_controller", to: "kazhat/controllers/call_popup_controller.js"
+              pin "kazhat/controllers/call_timer_controller", to: "kazhat/controllers/call_timer_controller.js"
+              pin "kazhat/controllers/chat_controller", to: "kazhat/controllers/chat_controller.js"
+              pin "kazhat/controllers/conversation_list_controller", to: "kazhat/controllers/conversation_list_controller.js"
+              pin "kazhat/controllers/incoming_call_controller", to: "kazhat/controllers/incoming_call_controller.js"
+              pin "kazhat/controllers/notification_controller", to: "kazhat/controllers/notification_controller.js"
+              pin "kazhat/controllers/quick_call_controller", to: "kazhat/controllers/quick_call_controller.js"
+              pin "kazhat/controllers/typing_controller", to: "kazhat/controllers/typing_controller.js"
+              pin "kazhat/controllers/video_grid_controller", to: "kazhat/controllers/video_grid_controller.js"
             RUBY
+          end
+
+          inject_into_file "app/javascript/application.js", after: /import.*controllers.*\n/ do
+            "import \"kazhat\"\n"
           end
         else
           say "Importmap not detected. If using jsbundling, add Kazhat to your build.", :yellow
