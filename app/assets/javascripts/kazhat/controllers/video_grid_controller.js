@@ -11,6 +11,9 @@ export default class extends Controller {
 
   disconnect() {
     if (this.unsubscribe) this.unsubscribe()
+    if (this._avatarIntervals) {
+      this._avatarIntervals.forEach(id => clearInterval(id))
+    }
     this.videoElements.clear()
   }
 
@@ -28,19 +31,44 @@ export default class extends Controller {
       return
     }
 
+    const name = participant.name || "Participant"
+
     const container = document.createElement("div")
     container.className = "kazhat-video-container"
     container.dataset.peerId = peerId
+
+    const avatar = document.createElement("div")
+    avatar.className = "kazhat-video-avatar"
+    avatar.textContent = name.charAt(0).toUpperCase()
 
     const video = document.createElement("video")
     video.autoplay = true
     video.playsInline = true
     video.srcObject = stream
 
+    // Show/hide avatar based on whether video track is active
+    const updateAvatar = () => {
+      const videoTrack = stream.getVideoTracks()[0]
+      const hasVideo = videoTrack && videoTrack.enabled && !videoTrack.muted && videoTrack.readyState === "live"
+      avatar.style.display = hasVideo ? "none" : "flex"
+      video.style.display = hasVideo ? "block" : "none"
+    }
+
+    stream.getVideoTracks().forEach(track => {
+      track.addEventListener("mute", updateAvatar)
+      track.addEventListener("unmute", updateAvatar)
+      track.addEventListener("ended", updateAvatar)
+    })
+    // Check periodically since enabled changes don't fire events
+    this._avatarIntervals = this._avatarIntervals || []
+    this._avatarIntervals.push(setInterval(updateAvatar, 1000))
+    updateAvatar()
+
     const nameLabel = document.createElement("div")
     nameLabel.className = "kazhat-video-name"
-    nameLabel.textContent = participant.name || "Participant"
+    nameLabel.textContent = name
 
+    container.appendChild(avatar)
     container.appendChild(video)
     container.appendChild(nameLabel)
 

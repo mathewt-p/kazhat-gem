@@ -80,6 +80,19 @@
   object-fit: cover;
 }
 
+.kazhat-video-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 48px;
+  font-weight: 600;
+  color: #fff;
+  background: #2c3e6b;
+  user-select: none;
+}
+
 .kazhat-video-name {
   position: absolute;
   bottom: 8px;

@@ -193,11 +193,12 @@ export default class extends Controller {
       case "offer":
         console.log("[Kazhat] Received offer from:", from_user_id, "existing peer:", !!peerData)
         if (!peerData) {
+          const knownParticipant = (callState.get().participants || []).find(p => p.id === from_user_id) || { id: from_user_id }
           const pc = createPeerConnection(callState.get().localStream, {
             onTrack: (stream) => {
               console.log("[Kazhat] Got remote track from:", from_user_id, "tracks:", stream.getTracks().map(t => `${t.kind}:${t.readyState}`))
               this.dispatch("addRemoteStream", {
-                detail: { peerId: from_user_id, participant: { id: from_user_id }, stream }
+                detail: { peerId: from_user_id, participant: knownParticipant, stream }
               })
             },
             onIceCandidate: (candidate) => {
@@ -209,11 +210,11 @@ export default class extends Controller {
             onConnectionStateChange: (state) => {
               console.log("[Kazhat] Connection state with", from_user_id, ":", state)
               if (state === "failed" || state === "disconnected") {
-                this.handleConnectionFailure(from_user_id, { id: from_user_id })
+                this.handleConnectionFailure(from_user_id, knownParticipant)
               }
             }
           })
-          peerData = { pc, participant: { id: from_user_id } }
+          peerData = { pc, participant: knownParticipant }
           callState.get().remotePeers.set(from_user_id, peerData)
         }
 
